@@ -67,13 +67,11 @@
         .now-playing { display: flex; align-items: center; gap: 15px; width: 300px; }
         .now-playing img { width: 55px; height: 55px; border-radius: 4px; object-fit: cover; }
         
-        .sc-player-box {
-            width: 320px;
-            height: 75px;
-            border-radius: 8px;
-            overflow: hidden;
+        audio {
+            width: 400px;
+            height: 40px;
+            outline: none;
         }
-        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
@@ -81,12 +79,12 @@
     <div class="container">
         <div class="sidebar">
             <h2>Streetify</h2>
-            <p style="color: #b3b3b3; font-size: 13px;">Domaća Muzika Plejer</p>
+            <p style="color: #b3b3b3; font-size: 13px;">Online Muzički Plejer</p>
         </div>
 
         <div class="main-content">
-            <h1>Domaće Pesme</h1>
-            <p style="color: #b3b3b3;">Klikni na pesmu i pusti pravi audio:</p>
+            <h1>Izabrane Pesme</h1>
+            <p style="color: #b3b3b3;">Klikni na kartu i pusti audio odmah:</p>
 
             <div class="results-grid" id="resultsGrid"></div>
         </div>
@@ -101,35 +99,37 @@
             </div>
         </div>
 
-        <div class="sc-player-box">
-            <iframe id="scPlayer" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1154563810&color=%231db954&auto_play=false&show_comments=false"></iframe>
+        <div>
+            <audio id="audioPlayer" controls></audio>
         </div>
+
+        <div style="width: 300px;"></div>
     </div>
 
     <script>
         const resultsGrid = document.getElementById('resultsGrid');
-        const scPlayer = document.getElementById('scPlayer');
+        const audioPlayer = document.getElementById('audioPlayer');
         const currentTitle = document.getElementById('currentTitle');
         const currentArtist = document.getElementById('currentArtist');
         const currentThumb = document.getElementById('currentThumb');
 
         const songs = [
             {
-                title: "Bella Hadid",
-                artist: "Voyage",
-                trackId: "1154563810",
+                title: "Cyberpunk Night Drive",
+                artist: "Synthwave Beats",
+                url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
                 cover: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300"
             },
             {
-                title: "Bebo 3",
-                artist: "Nucci",
-                trackId: "1190234149",
+                title: "Chill Trap Vibe",
+                artist: "Street Beats",
+                url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
                 cover: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300"
             },
             {
-                title: "Gnezdo Orlovo",
-                artist: "Breskvica",
-                trackId: "1730054799",
+                title: "Balkan Drive",
+                artist: "Bass Boosted",
+                url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
                 cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300"
             }
         ];
@@ -144,10 +144,11 @@
             `;
             
             card.addEventListener('click', () => {
-                scPlayer.src = `https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${song.trackId}&color=%231db954&auto_play=true&show_comments=false`;
+                audioPlayer.src = song.url;
                 currentTitle.innerText = song.title;
                 currentArtist.innerText = song.artist;
                 currentThumb.src = song.cover;
+                audioPlayer.play();
             });
 
             resultsGrid.appendChild(card);
