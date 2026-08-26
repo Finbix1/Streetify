@@ -15,7 +15,7 @@
             height: 100vh;
             overflow: hidden;
         }
-        .container { display: flex; flex: 1; height: calc(100vh - 100px); }
+        .container { display: flex; flex: 1; height: calc(100vh - 90px); }
         .sidebar {
             width: 240px;
             background-color: #000;
@@ -56,7 +56,7 @@
         .song-artist { color: #b3b3b3; font-size: 13px; }
 
         .player-bar {
-            height: 100px;
+            height: 90px;
             background-color: #181818;
             display: flex;
             align-items: center;
@@ -67,13 +67,11 @@
         .now-playing { display: flex; align-items: center; gap: 15px; width: 300px; }
         .now-playing img { width: 55px; height: 55px; border-radius: 4px; object-fit: cover; }
         
-        .yt-player-box {
-            width: 200px;
-            height: 80px;
-            border-radius: 8px;
-            overflow: hidden;
+        audio {
+            width: 400px;
+            height: 40px;
+            outline: none;
         }
-        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
@@ -81,12 +79,12 @@
     <div class="container">
         <div class="sidebar">
             <h2>Streetify</h2>
-            <p style="color: #b3b3b3; font-size: 13px;">Domaća Muzika Plejer</p>
+            <p style="color: #b3b3b3; font-size: 13px;">Online Muzički Plejer</p>
         </div>
 
         <div class="main-content">
-            <h1>Domaće Pesme</h1>
-            <p style="color: #b3b3b3;">Klikni na pesmu i pusti originalni snimak:</p>
+            <h1>Izabrane Pesme</h1>
+            <p style="color: #b3b3b3;">Klikni na pesmu i pusti muziku odmah:</p>
 
             <div class="results-grid" id="resultsGrid"></div>
         </div>
@@ -94,43 +92,45 @@
 
     <div class="player-bar">
         <div class="now-playing">
-            <img id="currentThumb" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200" alt="Cover">
+            <img id="currentThumb" src="https://picsum.photos/200" alt="Cover">
             <div>
                 <div class="song-title" id="currentTitle">Izaberi pesmu</div>
                 <div class="song-artist" id="currentArtist">-</div>
             </div>
         </div>
 
-        <div class="yt-player-box">
-            <iframe id="ytPlayer" src="https://www.youtube.com/embed/g8J1h6O1wUQ?enablejsapi=1" allow="autoplay"></iframe>
+        <div>
+            <audio id="audioPlayer" controls></audio>
         </div>
+
+        <div style="width: 300px;"></div>
     </div>
 
     <script>
         const resultsGrid = document.getElementById('resultsGrid');
-        const ytPlayer = document.getElementById('ytPlayer');
+        const audioPlayer = document.getElementById('audioPlayer');
         const currentTitle = document.getElementById('currentTitle');
         const currentArtist = document.getElementById('currentArtist');
         const currentThumb = document.getElementById('currentThumb');
 
         const songs = [
             {
-                title: "Bella Hadid",
-                artist: "Voyage",
-                ytId: "g8J1h6O1wUQ",
-                cover: "https://i.ytimg.com/vi/g8J1h6O1wUQ/hqdefault.jpg"
+                title: "Electronic Vibe",
+                artist: "Streetify Beats",
+                url: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3",
+                cover: "https://picsum.photos/id/1082/300/300"
             },
             {
-                title: "Bebo 3",
-                artist: "Nucci",
-                ytId: "h1Yf1092M8k",
-                cover: "https://i.ytimg.com/vi/h1Yf1092M8k/hqdefault.jpg"
+                title: "Chillout Wave",
+                artist: "Lofi Studio",
+                url: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3",
+                cover: "https://picsum.photos/id/146/300/300"
             },
             {
-                title: "Gnezdo Orlovo",
-                artist: "Breskvica",
-                ytId: "vBvE1Vq93-o",
-                cover: "https://i.ytimg.com/vi/vBvE1Vq93-o/hqdefault.jpg"
+                title: "Night Drive",
+                artist: "Bass Producer",
+                url: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3",
+                cover: "https://picsum.photos/id/392/300/300"
             }
         ];
 
@@ -144,10 +144,11 @@
             `;
             
             card.addEventListener('click', () => {
-                ytPlayer.src = `https://www.youtube.com/embed/${song.ytId}?autoplay=1`;
+                audioPlayer.src = song.url;
                 currentTitle.innerText = song.title;
                 currentArtist.innerText = song.artist;
                 currentThumb.src = song.cover;
+                audioPlayer.play();
             });
 
             resultsGrid.appendChild(card);
