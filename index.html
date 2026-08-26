@@ -2,14 +2,13 @@
 <html lang="sr">
 <head>
     <meta charset="UTF-8">
-    <title>Streetify</title>
+    <title>Streetify - Domaća Muzika</title>
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             background-color: #121212;
             color: white;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
             display: flex;
             flex-direction: column;
             height: 100vh;
@@ -24,7 +23,7 @@
             flex-direction: column;
             gap: 20px;
         }
-        .sidebar h2 { color: #1db954; margin: 0; }
+        .sidebar h2 { color: #1db954; }
         .main-content {
             flex: 1;
             padding: 30px;
@@ -43,6 +42,9 @@
             border-radius: 8px;
             cursor: pointer;
             transition: 0.2s;
+            text-decoration: none;
+            color: white;
+            display: block;
         }
         .song-card:hover { background: #282828; transform: translateY(-4px); }
         .song-card img {
@@ -67,11 +69,7 @@
         .now-playing { display: flex; align-items: center; gap: 15px; width: 300px; }
         .now-playing img { width: 55px; height: 55px; border-radius: 4px; object-fit: cover; }
         
-        audio {
-            width: 400px;
-            height: 40px;
-            outline: none;
-        }
+        audio { width: 350px; height: 40px; outline: none; }
     </style>
 </head>
 <body>
@@ -79,12 +77,12 @@
     <div class="container">
         <div class="sidebar">
             <h2>Streetify</h2>
-            <p style="color: #b3b3b3; font-size: 13px;">Domaći Muzički Plejer</p>
+            <p style="color: #b3b3b3; font-size: 13px;">Domaća Muzika</p>
         </div>
 
         <div class="main-content">
-            <h1>Domaće Stanice & Hitovi</h1>
-            <p style="color: #b3b3b3;">Klikni i slušaj uživo domaće hiteve:</p>
+            <h1>Domaće Pesme</h1>
+            <p style="color: #b3b3b3; margin-top: 5px;">Klikni na pesmu da je pustiš na YouTube-u ili izaberi radio uživo ispod:</p>
 
             <div class="results-grid" id="resultsGrid"></div>
         </div>
@@ -94,13 +92,14 @@
         <div class="now-playing">
             <img id="currentThumb" src="https://picsum.photos/200" alt="Cover">
             <div>
-                <div class="song-title" id="currentTitle">Izaberi stanicu</div>
-                <div class="song-artist" id="currentArtist">-</div>
+                <div class="song-title" id="currentTitle">Uživo Radio Strim</div>
+                <div class="song-artist" id="currentArtist">TDI Radio</div>
             </div>
         </div>
 
         <div>
-            <audio id="audioPlayer" controls></audio>
+            <!-- Audio plejer za radijske strimove uživo bez YouTube blokada -->
+            <audio id="audioPlayer" controls src="https://streaming.tdiradio.com/tdiradio.mp3"></audio>
         </div>
 
         <div style="width: 300px;"></div>
@@ -108,49 +107,39 @@
 
     <script>
         const resultsGrid = document.getElementById('resultsGrid');
-        const audioPlayer = document.getElementById('audioPlayer');
-        const currentTitle = document.getElementById('currentTitle');
-        const currentArtist = document.getElementById('currentArtist');
-        const currentThumb = document.getElementById('currentThumb');
 
+        // Spisak pesama sa direktnim YouTube linkovima i slikama
         const songs = [
             {
-                title: "TDI Radio Belgrade",
-                artist: "Domaći & Strani Hitovi",
-                url: "https://streaming.tdiradio.com/tdiradio.mp3",
-                cover: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300"
+                title: "Bella Hadid",
+                artist: "Voyage",
+                ytUrl: "https://www.youtube.com/watch?v=W3q8Od5qJio",
+                cover: "https://img.youtube.com/vi/W3q8Od5qJio/hqdefault.jpg"
             },
             {
-                title: "Cool Radio Belgrade",
-                artist: "Domaći Narodni & Pop Hitovi",
-                url: "https://coolradio.stream.neobee.net/coolradio",
-                cover: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300"
+                title: "Bebo 3",
+                artist: "Nucci",
+                ytUrl: "https://www.youtube.com/watch?v=kJQP7kiw5Fk",
+                cover: "https://img.youtube.com/vi/kJQP7kiw5Fk/hqdefault.jpg"
             },
             {
-                title: "Play Radio",
-                artist: "Pop & Balkan Beats",
-                url: "https://stream.playradio.rs:8001/play.mp3",
-                cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300"
+                title: "Gnezdo Orlovo",
+                artist: "Breskvica",
+                ytUrl: "https://www.youtube.com/watch?v=3R-c0m4K04E",
+                cover: "https://img.youtube.com/vi/3R-c0m4K04E/hqdefault.jpg"
             }
         ];
 
         songs.forEach(song => {
-            const card = document.createElement('div');
+            const card = document.createElement('a');
             card.classList.add('song-card');
+            card.href = song.ytUrl;
+            card.target = "_blank"; // Otvara pesmu direktno na YT bez blokade
             card.innerHTML = `
                 <img src="${song.cover}" alt="${song.title}">
                 <div class="song-title">${song.title}</div>
                 <div class="song-artist">${song.artist}</div>
             `;
-            
-            card.addEventListener('click', () => {
-                audioPlayer.src = song.url;
-                currentTitle.innerText = song.title;
-                currentArtist.innerText = song.artist;
-                currentThumb.src = song.cover;
-                audioPlayer.play();
-            });
-
             resultsGrid.appendChild(card);
         });
     </script>
